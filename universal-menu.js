@@ -1,19 +1,16 @@
 /**
- * UNIVERSAL SYNC MASTER LOGIC - LOCKED VERSION 1.04
- * Standards: 90% Width, No-Cache, Full-Code Mandate [cite: 2026-01-26]
- * MANDATORY: Site-specific links must only show on their associated sites.
+ * UNIVERSAL SYNC MASTER LOGIC - LOCKED VERSION 1.05
+ * Standards: 90% Width, No-Cache, Full-Code Mandate
+ * Mandatory: Amazon Link on all sites, Site-specific buttons only on associated sites.
  */
 
-const version = "1.04";
+const version = "1.05";
 const cacheBuster = "?v=" + version;
 
-const PACK_CONFIG = {
-    endpoints: [
-        "https://werewolf.ourflora.com/wp-json/menus/v1/menus/primary",
-        "https://ourflora.com/wp-json/menus/v1/menus/primary",
-        "https://supportmylocalcommunity.com/wp-json/menus/v1/menus/primary"
-    ]
-};
+// MANDATORY: This link appears on ALL sites first
+const permanentLinks = [
+    { title: "📦 Amazon Today's Deals", url: "https://www.amazon.com/gp/goldbox?tag=werewolf3788-20" }
+];
 
 // MANDATORY: Werewolf-specific links
 const werewolfGamerLinks = [
@@ -35,19 +32,16 @@ const sharedLinks = [
 const siteConfigs = {
     werewolf: {
         folder: 'werewolf',
-        apiUrl: PACK_CONFIG.endpoints[0],
         manualLinks: werewolfGamerLinks,
         buttonClass: 'glossy-town-btn'
     },
     supportmylocalcommunity: {
         folder: 'supportmylocalcommunity',
-        apiUrl: PACK_CONFIG.endpoints[2],
         manualLinks: sharedLinks,
         buttonClass: 'glossy-town-btn'
     },
     ourflora: {
         folder: 'ourflora',
-        apiUrl: PACK_CONFIG.endpoints[1],
         manualLinks: sharedLinks,
         buttonClass: 'glossy-town-btn'
     }
@@ -58,13 +52,41 @@ async function syncAll() {
     const customContainer = document.getElementById('site-custom-container');
     const searchParams = new URLSearchParams(window.location.search);
     
-    // Logic defaults to 'werewolf' to ensure gamer links show by default [cite: 2026-01-28]
+    // Default to 'werewolf' to ensure gamer links show by default
     const siteKey = searchParams.get('site') || 'werewolf';
     const siteConfig = siteConfigs[siteKey];
 
-    // 1. Universal Nav (Combines all 3 community sites)
+    // 1. Render Mandatory Amazon Link + Site Specific Links
+    if (customContainer && siteConfig) {
+        customContainer.innerHTML = '';
+        
+        // CSS Cache-Busting Versioning
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `https://kfruti88.github.io/Clay-County-All/${siteConfig.folder}/custom.css${cacheBuster}`;
+        document.head.appendChild(link);
+        
+        // Combine Mandatory Amazon Link with the site's specific buttons
+        const allButtons = [...permanentLinks, ...siteConfig.manualLinks];
+
+        allButtons.forEach(item => {
+            const btn = document.createElement('a');
+            btn.href = item.url;
+            btn.innerText = item.title;
+            btn.className = siteConfig.buttonClass;
+            customContainer.appendChild(btn);
+        });
+    }
+
+    // 2. Universal Navigation (Mixing menus from all sites)
     let navHTML = '';
-    for (const url of PACK_CONFIG.endpoints) {
+    const endpoints = [
+        "https://werewolf.ourflora.com/wp-json/menus/v1/menus/primary",
+        "https://ourflora.com/wp-json/menus/v1/menus/primary",
+        "https://supportmylocalcommunity.com/wp-json/menus/v1/menus/primary"
+    ];
+
+    for (const url of endpoints) {
         try {
             const res = await fetch(url + cacheBuster.replace('v=', 'cb='));
             const data = await res.json();
@@ -73,29 +95,9 @@ async function syncAll() {
                     navHTML += `<li><a href="${item.url}">${item.title}</a></li>`;
                 });
             }
-        } catch (e) { console.error("Universal Sync: Endpoint unreachable: " + url); }
+        } catch (e) { console.error("Universal Sync: Endpoint error at " + url); }
     }
     if (nav) nav.innerHTML = navHTML;
-
-    // 2. Site-Specific Links (Mandatory Association)
-    if (siteConfig && customContainer) {
-        customContainer.innerHTML = '';
-        
-        // CSS Cache-Busting Versioning [cite: 2026-01-26]
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = `https://kfruti88.github.io/Clay-County-All/${siteConfig.folder}/custom.css${cacheBuster}`;
-        document.head.appendChild(link);
-
-        // Render buttons only for the active site
-        siteConfig.manualLinks.forEach(item => {
-            const btn = document.createElement('a');
-            btn.href = item.url;
-            btn.innerText = item.title;
-            btn.className = siteConfig.buttonClass;
-            customContainer.appendChild(btn);
-        });
-    }
 }
 
 document.addEventListener('DOMContentLoaded', syncAll);
