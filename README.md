@@ -1,34 +1,40 @@
-# Universal-Menu-Bar
+🐺 Werewolf & Pack Community Project Standards
+📌 Core Site Mapping
+Main Site: https://ourflora.com
 
-A universal menu bar for `supportmylocalcommunity.com`, `ourflora.com`, and `werewolf.ourflora.com`.
+Community Hub: https://supportmylocalcommunity.com
 
-## Features
-1.  **Amazon Today's Deals**: A locked, eye-catching button on the left side linking to Amazon deals.
-2.  **Dynamic Background**: Syncs with New York (Eastern) Time.
-    *   **Daytime (6AM - 6PM)**: Light Blue background.
-    *   **Nighttime (6PM - 6AM)**: Black background.
-    *   **Transition**: Smooth fade matching sunrise/sunset feel.
-3.  **Customization**: Separate folders for each website to apply specific styles.
+Gamer Portal: https://werewolf.ourflora.com
 
-## Installation
+🎮 The Pack (Gamer Page IDs)
+Use these IDs when fetching via the WordPress REST API to ensure only the "Pack of 5" is displayed:
 
-Include the core files and the specific site customization file in your HTML `<head>` or body.
+Werewolf3788: ID 4
 
-### Example for Support My Local Community:
-```html
-<link rel="stylesheet" href="/universal-menu.css">
-<link rel="stylesheet" href="/supportmylocalcommunity/custom.css">
-<script src="/universal-menu.js"></script>
-```
+DarkwingDog (TJ): ID 5
 
-### Example for Our Flora:
-```html
-<link rel="stylesheet" href="/universal-menu.css">
-<link rel="stylesheet" href="/ourflora/custom.css">
-<script src="/universal-menu.js"></script>
-```
+Phoenix_Darkfire (Seth): ID 6
 
-## File Structure
-*   `universal-menu.js`: Core logic (Time sync, HTML injection).
-*   `universal-menu.css`: Core styling (Amazon button, transitions).
-*   `[site-folder]/custom.css`: Site-specific overrides.
+Raymystyro: ID 7
+
+MjolnirGaming (Michael): ID 17
+
+🔗 Universal Menu Configuration
+To sync the universal menu, the script must fetch from the following endpoints:
+
+Endpoint 1: https://ourflora.com/wp-json/menus/v1/menus/primary
+
+Endpoint 2: https://supportmylocalcommunity.com/wp-json/menus/v1/menus/primary
+
+Endpoint 3: https://werewolf.ourflora.com/wp-json/menus/v1/menus/primary
+
+Note: All menus must be assigned to the "Primary" display location in the WordPress dashboard.
+
+🛠️ Technical Requirements
+Container Width: Default to 90% for all screen sizes.
+
+Responsiveness: Elements must stack vertically on mobile/smaller screens.
+
+Cache Busting: Always include "No-Cache" meta tags in <head> and use versioning (e.g., style.css?v=1.01).
+
+Amazon Affiliate: Always use Tracking ID werewolf3788-20.
