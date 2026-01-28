@@ -1,18 +1,8 @@
 /* Universal Menu Bar Container */
-#universal-menu-bar {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
+#universal-nav-container {
     z-index: 99999;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    
-    /* Smooth transition for sunrise/sunset effect */
-    transition: background-color 3s ease-in-out;
+    border-radius: 0 0 8px 8px; /* Slight rounding at bottom */
 }
 
 /* Day Mode: Light Blue */
@@ -27,35 +17,20 @@
     color: #fff;
 }
 
-/* Amazon "Today's Deals" Button Styling */
-#amazon-deal-btn {
-    margin-left: 20px; /* Locked to the left */
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 10px 20px;
-    border-radius: 4px;
-    
-    /* Eye-catching Amazon Gold/Orange Gradient */
-    background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-    border: 1px solid #a88734;
-    color: #111;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset, 0 2px 4px rgba(0,0,0,0.2);
-    
-    transition: all 0.2s ease;
-}
-
-#amazon-deal-btn:hover {
-    background: linear-gradient(to bottom, #f5d78e, #eeb933);
-    cursor: pointer;
-    transform: scale(1.02);
-}
-
-/* Container for site specific buttons */
-#site-custom-container {
-    margin-left: auto; /* Pushes custom buttons to the right */
-    margin-right: 20px;
-    display: flex;
-    gap: 15px;
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    #universal-nav-container { 
+        flex-direction: column; 
+        text-align: center; 
+        gap: 10px; 
+    }
+    #nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    #site-custom-container {
+        margin-left: 0 !important;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }

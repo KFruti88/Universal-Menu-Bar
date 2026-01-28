@@ -1,38 +1,6 @@
-/* Custom styles for werewolf.ourflora.com */
+/* Custom styles for ourflora.com */
 
-/* 1. Menu Bar Override: Gamer Vibe */
-#universal-menu-bar {
-    border-bottom: 3px solid #9146FF; /* Twitch Purple */
-    box-shadow: 0 0 15px rgba(145, 70, 255, 0.4);
-}
-
-/* 2. Streamer Buttons Styling */
-.streamer-btn {
-    text-decoration: none;
-    color: #fff;
-    background-color: #18181b; /* Twitch Dark Background */
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    border: 1px solid #9146FF;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    
-    /* Neon Glow Text */
-    text-shadow: 0 0 5px rgba(145, 70, 255, 0.5);
-}
-
-/* Hover Effects: Neon Glow */
-.streamer-btn:hover {
-    background-color: #9146FF;
-    color: #fff;
-    box-shadow: 0 0 15px #9146FF, 0 0 30px #9146FF;
-    transform: translateY(-2px) scale(1.05);
-    cursor: pointer;
-    border-color: #fff;
+/* Example: Add a floral touch */
+#universal-nav-container {
+    border-bottom: 3px solid #e91e63; /* Pink for flora */
 }
