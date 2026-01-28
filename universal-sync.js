@@ -1,18 +1,18 @@
 /**
  * UNIVERSAL SYNC MASTER LOGIC - LOCKED VERSION 1.05
  * Standards: 90% Width, No-Cache, Full-Code Mandate [cite: 2026-01-26]
- * Mandatory: Amazon Link on all sites, Site-specific buttons associated correctly. [cite: 2026-01-27]
+ * Mandatory: Amazon Link on all sites, Site-specific buttons only on associated sites. [cite: 2026-01-27, 2026-01-28]
  */
 
 const version = "1.05";
 const cacheBuster = "?v=" + version;
 
-// MANDATORY: Amazon Today's Deals Tracking [cite: 2026-01-27]
+// MANDATORY: Amazon Today's Deals (Tracking ID: werewolf3788-20) [cite: 2026-01-27]
 const permanentLinks = [
     { title: "📦 Amazon Today's Deals", url: "https://www.amazon.com/gp/goldbox?tag=werewolf3788-20" }
 ];
 
-// MANDATORY: Werewolf-specific links [cite: 2026-01-28]
+// MANDATORY: Werewolf-specific gamer links [cite: 2026-01-28]
 const werewolfGamerLinks = [
     { title: 'Werewolf Main', url: 'https://werewolf.ourflora.com/' },
     { title: 'Werewolf Home', url: 'https://werewolf.ourflora.com/home/werewolf/' },
@@ -60,13 +60,13 @@ async function syncAll() {
     if (customContainer && siteConfig) {
         customContainer.innerHTML = '';
         
-        // Load custom CSS for the specific site [cite: 2026-01-26]
+        // CSS Cache-Busting from GitHub Repository [cite: 2026-01-26]
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = `https://kfruti88.github.io/Clay-County-All/${siteConfig.folder}/custom.css${cacheBuster}`;
         document.head.appendChild(link);
         
-        // Combine Mandatory Amazon Link with the site's specific buttons [cite: 2026-01-27]
+        // Combine Mandatory Amazon + Site Specific Buttons [cite: 2026-01-27, 2026-01-28]
         const allButtons = [...permanentLinks, ...siteConfig.manualLinks];
 
         allButtons.forEach(item => {
@@ -78,7 +78,7 @@ async function syncAll() {
         });
     }
 
-    // 2. Universal Navigation (Mixing menus from all sites) [cite: 2026-01-28]
+    // 2. Universal Navigation (Mixed Community Menus) [cite: 2026-01-28]
     let navHTML = '';
     const endpoints = [
         "https://werewolf.ourflora.com/wp-json/menus/v1/menus/primary",
@@ -95,7 +95,7 @@ async function syncAll() {
                     navHTML += `<li><a href="${item.url}">${item.title}</a></li>`;
                 });
             }
-        } catch (e) { console.error("Universal Sync: Endpoint error at " + url); }
+        } catch (e) { console.error("Universal Sync Error: " + url); }
     }
     if (nav) nav.innerHTML = navHTML;
 }
