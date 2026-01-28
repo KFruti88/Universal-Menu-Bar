@@ -1,4 +1,13 @@
 (function() {
+    // 1. Domain Check: Ensure this only runs on the Werewolf site or during specific testing
+    const allowedHost = 'werewolf.ourflora.com';
+    const isTestEnv = window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost');
+    const isWerewolfTest = isTestEnv && window.location.search.includes('site=werewolf');
+
+    if (window.location.hostname !== allowedHost && !isWerewolfTest) {
+        return;
+    }
+
     // List of streamers for the menu
     const streamers = [
         { name: 'Werewolf3788', url: 'https://www.twitch.tv/Werewolf3788' },
