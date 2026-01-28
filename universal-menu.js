@@ -45,12 +45,38 @@
             .then(response => response.json())
             .then(sites => {
                 sites.forEach(site => {
-                    const link = document.createElement('a');
-                    link.href = site.url;
-                    link.innerText = site.name;
-                    link.style.cssText = "color: inherit; margin-left: 15px; text-decoration: none;";
-                    // Insert before the custom container so they appear to the left of it
-                    navLinks.insertBefore(link, customContainer);
+                    if (site.dropdown) {
+                        // Create Dropdown Container
+                        const dropdown = document.createElement('div');
+                        dropdown.className = 'universal-dropdown';
+                        dropdown.style.cssText = "margin-left: 15px; cursor: pointer; position: relative;";
+                        
+                        // Trigger Text
+                        const trigger = document.createElement('span');
+                        trigger.innerText = site.name + ' ▼';
+                        trigger.style.cssText = "color: inherit;";
+                        dropdown.appendChild(trigger);
+
+                        // Dropdown Content
+                        const content = document.createElement('div');
+                        content.className = 'universal-dropdown-content';
+                        
+                        site.dropdown.forEach(item => {
+                            const itemLink = document.createElement('a');
+                            itemLink.href = item.url;
+                            itemLink.innerText = item.name;
+                            content.appendChild(itemLink);
+                        });
+                        
+                        dropdown.appendChild(content);
+                        navLinks.insertBefore(dropdown, customContainer);
+                    } else {
+                        const link = document.createElement('a');
+                        link.href = site.url;
+                        link.innerText = site.name;
+                        link.style.cssText = "color: inherit; margin-left: 15px; text-decoration: none;";
+                        navLinks.insertBefore(link, customContainer);
+                    }
                 });
             })
             .catch(err => console.warn('Could not load menu-config.json', err));

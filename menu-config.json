@@ -4,7 +4,16 @@
         "url": "https://ourflora.com"
     },
     {
-        "name": "Support Local",
-        "url": "https://supportmylocalcommunity.com"
+        "name": "Community",
+        "dropdown": [
+            {
+                "name": "Support Local",
+                "url": "https://supportmylocalcommunity.com"
+            },
+            {
+                "name": "Events",
+                "url": "#"
+            }
+        ]
     }
 ]
