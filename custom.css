@@ -1,6 +1,35 @@
-/* Custom styles for ourflora.com */
+/* Glossy Theme for Our Flora */
 
-/* Example: Add a floral touch */
 #universal-nav-container {
-    border-bottom: 3px solid #e91e63; /* Pink for flora */
+    /* Floral Glossy Overlay */
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 51%, rgba(255,255,255,0.1) 100%);
+    border-bottom: 3px solid #e91e63; /* Pink accent */
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
+}
+
+#nav-links a {
+    font-weight: 500;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+
+/* Glossy Town Buttons (Pink Variant) */
+.glossy-town-btn {
+    text-decoration: none;
+    color: #fff !important;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+    
+    /* Pink Gloss Gradient */
+    background: linear-gradient(to bottom, #ff5c8d 0%, #e91e63 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.glossy-town-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 4px 8px rgba(0,0,0,0.3);
 }

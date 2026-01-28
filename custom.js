@@ -1,45 +1,41 @@
 (function() {
-    // 1. Domain Check: Ensure this only runs on the Werewolf site or during specific testing
-    const allowedHost = 'werewolf.ourflora.com';
+    // Domain Check for Our Flora
     const isTestEnv = window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost');
-    const isWerewolfTest = isTestEnv && window.location.search.includes('site=werewolf');
+    const isOurFloraTest = isTestEnv && window.location.search.includes('site=ourflora');
 
-    if (window.location.hostname !== allowedHost && !isWerewolfTest) {
+    if (!isOurFloraTest && window.location.hostname !== 'ourflora.com') {
         return;
     }
 
-    // List of streamers for the menu
-    const streamers = [
-        { name: 'Werewolf3788', url: 'https://www.twitch.tv/Werewolf3788' },
-        { name: 'Phoenix_Darkfire', url: 'https://www.twitch.tv/Phoenix_Darkfire' },
-        { name: 'Darkwing6942', url: 'https://www.twitch.tv/Darkwing6942' },
-        { name: 'MJOLNIR', url: 'https://www.twitch.tv/MJOLNIR' },
-        { name: 'Raymystro', url: 'https://www.twitch.tv/Raymystro' }
+    // Towns of Clay County, IL (Shared with SMLC)
+    const towns = [
+        { name: 'Flora', url: '#' },
+        { name: 'Louisville', url: '#' },
+        { name: 'Clay City', url: '#' },
+        { name: 'Xenia', url: '#' },
+        { name: 'Sailor Springs', url: '#' }
     ];
 
-    function injectStreamerButtons() {
+    function injectTownButtons() {
         const container = document.getElementById('site-custom-container');
-        
-        // Wait for the container if it hasn't loaded yet
         if (!container) {
-            setTimeout(injectStreamerButtons, 50);
+            setTimeout(injectTownButtons, 50);
             return;
         }
+        container.innerHTML = ''; // Clear existing
 
-        streamers.forEach(streamer => {
+        towns.forEach(town => {
             const btn = document.createElement('a');
-            btn.href = streamer.url;
-            btn.target = '_blank';
-            btn.className = 'streamer-btn';
-            btn.innerText = streamer.name;
+            btn.href = town.url;
+            btn.className = 'glossy-town-btn';
+            btn.innerText = town.name;
             container.appendChild(btn);
         });
     }
 
-    // Initialize
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', injectStreamerButtons);
+        document.addEventListener('DOMContentLoaded', injectTownButtons);
     } else {
-        injectStreamerButtons();
+        injectTownButtons();
     }
 })();
