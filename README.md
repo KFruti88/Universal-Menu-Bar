@@ -38,3 +38,11 @@ Responsiveness: Elements must stack vertically on mobile/smaller screens.
 Cache Busting: Always include "No-Cache" meta tags in <head> and use versioning (e.g., style.css?v=1.01).
 
 Amazon Affiliate: Always use Tracking ID werewolf3788-20.
+
+Locations for Everyone
+Kevin "Werewolf" live in zipcode 32609
+Scott (boss) - {Is not a Gamer} lives in 62401
+Ray lives in 62839
+TJ "DarkwingDog", "Darkterror" lives in 50276
+Seth "Phoenix Darkfire" lives in 62838
+Michael " MjolnirGaming" lives in 62040
