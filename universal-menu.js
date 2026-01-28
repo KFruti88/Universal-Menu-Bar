@@ -1,118 +1,101 @@
-(function() {
-    // 1. Create the Menu Bar Container (Nav)
-    const menuBar = document.createElement('nav');
-    menuBar.id = 'universal-nav-container';
+/**
+ * UNIVERSAL SYNC MASTER LOGIC - LOCKED VERSION 1.04
+ * Standards: 90% Width, No-Cache, Full-Code Mandate [cite: 2026-01-26]
+ * MANDATORY: Site-specific links must only show on their associated sites.
+ */
+
+const version = "1.04";
+const cacheBuster = "?v=" + version;
+
+const PACK_CONFIG = {
+    endpoints: [
+        "https://werewolf.ourflora.com/wp-json/menus/v1/menus/primary",
+        "https://ourflora.com/wp-json/menus/v1/menus/primary",
+        "https://supportmylocalcommunity.com/wp-json/menus/v1/menus/primary"
+    ]
+};
+
+// MANDATORY: Werewolf-specific links
+const werewolfGamerLinks = [
+    { title: 'Werewolf Main', url: 'https://werewolf.ourflora.com/' },
+    { title: 'Werewolf Home', url: 'https://werewolf.ourflora.com/home/werewolf/' },
+    { title: 'Phoenix Darkfire', url: 'https://werewolf.ourflora.com/phoenix-darkfire/' },
+    { title: 'DarkwingDog', url: 'https://werewolf.ourflora.com/darkwingdog/' },
+    { title: 'MjolnirGaming', url: 'https://werewolf.ourflora.com/home/mjolnirgaming/' },
+    { title: 'Ray', url: 'https://werewolf.ourflora.com/home/ray-2/' }
+];
+
+const sharedLinks = [
+    { title: 'SMLC Home', url: 'https://www.supportmylocalcommunity.com/' },
+    { title: 'Clay City', url: 'https://supportmylocalcommunity.com/clay-city/' },
+    { title: 'Our Flora', url: 'https://ourflora.com/' },
+    { title: 'Profile', url: 'https://ourflora.com/profile/' }
+];
+
+const siteConfigs = {
+    werewolf: {
+        folder: 'werewolf',
+        apiUrl: PACK_CONFIG.endpoints[0],
+        manualLinks: werewolfGamerLinks,
+        buttonClass: 'glossy-town-btn'
+    },
+    supportmylocalcommunity: {
+        folder: 'supportmylocalcommunity',
+        apiUrl: PACK_CONFIG.endpoints[2],
+        manualLinks: sharedLinks,
+        buttonClass: 'glossy-town-btn'
+    },
+    ourflora: {
+        folder: 'ourflora',
+        apiUrl: PACK_CONFIG.endpoints[1],
+        manualLinks: sharedLinks,
+        buttonClass: 'glossy-town-btn'
+    }
+};
+
+async function syncAll() {
+    const nav = document.getElementById('universal-nav');
+    const customContainer = document.getElementById('site-custom-container');
+    const searchParams = new URLSearchParams(window.location.search);
     
-    // Apply base styles (93% width, centered, flexbox)
-    // Note: Background color is handled by Day/Night logic below
-    menuBar.style.cssText = "width: 93%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px; flex-wrap: wrap; font-family: sans-serif; transition: background-color 3s ease-in-out;";
+    // Logic defaults to 'werewolf' to ensure gamer links show by default [cite: 2026-01-28]
+    const siteKey = searchParams.get('site') || 'werewolf';
+    const siteConfig = siteConfigs[siteKey];
 
-    // 2. Create the Amazon "Today's Deals" Button
-    const amazonLink = document.createElement('a');
-    amazonLink.href = 'https://www.amazon.com/gp/goldbox?tag=todaysdealswerewolf-20';
-    amazonLink.target = '_blank';
-    amazonLink.innerText = "Today's Deals";
-    amazonLink.id = 'amazon-deal-btn';
-    
-    // Apply specific Amazon styles from request
-    amazonLink.style.cssText = "background: #ff9900; color: #000; padding: 5px 10px; border-radius: 4px; font-weight: bold; text-decoration: none;";
-    
-    // Append Amazon link to the bar (Locked to the left)
-    menuBar.appendChild(amazonLink);
-
-    // 3. Create Container for Links (Flora, Support Local, Custom)
-    const navLinks = document.createElement('div');
-    navLinks.id = 'nav-links';
-    navLinks.style.display = 'flex';
-    navLinks.style.alignItems = 'center';
-    navLinks.style.flexWrap = 'wrap';
-
-    // 4. Create a container for site-specific custom buttons (Werewolf Streamers)
-    // We create this first so it exists immediately for site-specific scripts
-    const customContainer = document.createElement('div');
-    customContainer.id = 'site-custom-container';
-    customContainer.style.cssText = "margin-left: 15px; display: flex; gap: 10px;";
-    navLinks.appendChild(customContainer);
-
-    // 5. Fetch Dynamic Links from menu-config.json
-    // This allows you to update links in one file (menu-config.json) for all sites
-    let scriptEl = document.currentScript;
-    if (!scriptEl) scriptEl = document.querySelector('script[src*="universal-menu.js"]');
-
-    if (scriptEl) {
-        const configUrl = new URL('menu-config.json', scriptEl.src).href;
-        fetch(configUrl)
-            .then(response => response.json())
-            .then(sites => {
-                sites.forEach(site => {
-                    if (site.dropdown) {
-                        // Create Dropdown Container
-                        const dropdown = document.createElement('div');
-                        dropdown.className = 'universal-dropdown';
-                        dropdown.style.cssText = "margin-left: 15px; cursor: pointer; position: relative;";
-                        
-                        // Trigger Text
-                        const trigger = document.createElement('span');
-                        trigger.innerText = site.name + ' ▼';
-                        trigger.style.cssText = "color: inherit;";
-                        dropdown.appendChild(trigger);
-
-                        // Dropdown Content
-                        const content = document.createElement('div');
-                        content.className = 'universal-dropdown-content';
-                        
-                        site.dropdown.forEach(item => {
-                            const itemLink = document.createElement('a');
-                            itemLink.href = item.url;
-                            itemLink.innerText = item.name;
-                            content.appendChild(itemLink);
-                        });
-                        
-                        dropdown.appendChild(content);
-                        navLinks.insertBefore(dropdown, customContainer);
-                    } else {
-                        const link = document.createElement('a');
-                        link.href = site.url;
-                        link.innerText = site.name;
-                        link.style.cssText = "color: inherit; margin-left: 15px; text-decoration: none;";
-                        navLinks.insertBefore(link, customContainer);
-                    }
+    // 1. Universal Nav (Combines all 3 community sites)
+    let navHTML = '';
+    for (const url of PACK_CONFIG.endpoints) {
+        try {
+            const res = await fetch(url + cacheBuster.replace('v=', 'cb='));
+            const data = await res.json();
+            if (data.items) {
+                data.items.forEach(item => {
+                    navHTML += `<li><a href="${item.url}">${item.title}</a></li>`;
                 });
-            })
-            .catch(err => console.warn('Could not load menu-config.json', err));
+            }
+        } catch (e) { console.error("Universal Sync: Endpoint unreachable: " + url); }
     }
+    if (nav) nav.innerHTML = navHTML;
 
-    menuBar.appendChild(navLinks);
-
-    // Inject into the DOM
-    document.body.prepend(menuBar);
-
-    // 6. Time Zone Logic (New York / Eastern Time)
-    function updateBackground() {
-        const now = new Date();
-        const formatter = new Intl.DateTimeFormat('en-US', {
-            hour: 'numeric',
-            hour12: false,
-            timeZone: 'America/New_York'
-        });
+    // 2. Site-Specific Links (Mandatory Association)
+    if (siteConfig && customContainer) {
+        customContainer.innerHTML = '';
         
-        const hour = parseInt(formatter.format(now));
-        const isDay = hour >= 6 && hour < 18;
+        // CSS Cache-Busting Versioning [cite: 2026-01-26]
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `https://kfruti88.github.io/Clay-County-All/${siteConfig.folder}/custom.css${cacheBuster}`;
+        document.head.appendChild(link);
 
-        if (isDay) {
-            menuBar.classList.remove('night-mode');
-            menuBar.classList.add('day-mode');
-            menuBar.style.color = '#333'; // Dark text for day
-        } else {
-            menuBar.classList.remove('day-mode');
-            menuBar.classList.add('night-mode');
-            menuBar.style.color = '#fff'; // White text for night
-        }
+        // Render buttons only for the active site
+        siteConfig.manualLinks.forEach(item => {
+            const btn = document.createElement('a');
+            btn.href = item.url;
+            btn.innerText = item.title;
+            btn.className = siteConfig.buttonClass;
+            customContainer.appendChild(btn);
+        });
     }
+}
 
-    // Initial check
-    updateBackground();
-
-    // Check every minute to update if the sun sets/rises while user is on page
-    setInterval(updateBackground, 60000);
-})();
+document.addEventListener('DOMContentLoaded', syncAll);
