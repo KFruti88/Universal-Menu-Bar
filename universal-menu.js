@@ -27,32 +27,41 @@
     navLinks.style.alignItems = 'center';
     navLinks.style.flexWrap = 'wrap';
 
-    // Add Static Site Links
-    const sites = [
-        { name: 'Flora', url: 'https://ourflora.com' },
-        { name: 'Support Local', url: 'https://supportmylocalcommunity.com' }
-    ];
-
-    sites.forEach(site => {
-        const link = document.createElement('a');
-        link.href = site.url;
-        link.innerText = site.name;
-        link.style.cssText = "color: inherit; margin-left: 15px; text-decoration: none;";
-        navLinks.appendChild(link);
-    });
-
     // 4. Create a container for site-specific custom buttons (Werewolf Streamers)
+    // We create this first so it exists immediately for site-specific scripts
     const customContainer = document.createElement('div');
     customContainer.id = 'site-custom-container';
     customContainer.style.cssText = "margin-left: 15px; display: flex; gap: 10px;";
     navLinks.appendChild(customContainer);
+
+    // 5. Fetch Dynamic Links from menu-config.json
+    // This allows you to update links in one file (menu-config.json) for all sites
+    let scriptEl = document.currentScript;
+    if (!scriptEl) scriptEl = document.querySelector('script[src*="universal-menu.js"]');
+
+    if (scriptEl) {
+        const configUrl = new URL('menu-config.json', scriptEl.src).href;
+        fetch(configUrl)
+            .then(response => response.json())
+            .then(sites => {
+                sites.forEach(site => {
+                    const link = document.createElement('a');
+                    link.href = site.url;
+                    link.innerText = site.name;
+                    link.style.cssText = "color: inherit; margin-left: 15px; text-decoration: none;";
+                    // Insert before the custom container so they appear to the left of it
+                    navLinks.insertBefore(link, customContainer);
+                });
+            })
+            .catch(err => console.warn('Could not load menu-config.json', err));
+    }
 
     menuBar.appendChild(navLinks);
 
     // Inject into the DOM
     document.body.prepend(menuBar);
 
-    // 5. Time Zone Logic (New York / Eastern Time)
+    // 6. Time Zone Logic (New York / Eastern Time)
     function updateBackground() {
         const now = new Date();
         const formatter = new Intl.DateTimeFormat('en-US', {
