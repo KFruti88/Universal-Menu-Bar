@@ -1,0 +1,6 @@
+/* Custom styles for werewolf.ourflora.com */
+
+/* Example: Make it look a bit wilder */
+#universal-menu-bar {
+    border-bottom: 3px solid #8e44ad; /* Purple/Dark for werewolf */
+}
